@@ -83,6 +83,22 @@ ready-to-use examples::
     git clone https://github.com/pfalcon/python-imphook
 
 
+API to install hooks
+--------------------
+
+The API of the module consists of one function:
+`imphook.add_import_hook(hook, ext_tuple)`. *hook* is a name of
+hook function. *ext_tuple* is a tuple of file extensions
+the hook function should handle (the leading dot should be included).
+More often than not, you will want to handle just one extension,
+so don't forget to use the usual Python syntax with a trailing
+comma for 1-element tuple, e.g.: ``(".ext",)``. Python modules may
+not contain a dot (``"."``) in their names (they are used to separate
+subpackages), so the extension you register may contain multiple
+dots, e.g. ``".foo.bar"``, with filename ``my_module.foo.bar``
+matching it.
+
+
 Credits and licensing
 ---------------------
 
