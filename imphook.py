@@ -150,6 +150,8 @@ https://github.com/pfalcon/python-imphook
             loader.name = "__main__"
             sys.argv[0] = loader.path
             mod = loader.create_module(spec)
+            if not mod:
+                mod = type(sys)("__main__")
             loader.exec_module(mod)
     else:
         try:
