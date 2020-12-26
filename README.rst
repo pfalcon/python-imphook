@@ -98,6 +98,15 @@ subpackages), so the extension you register may contain multiple
 dots, e.g. ``".foo.bar"``, with filename ``my_module.foo.bar``
 matching it.
 
+It is possible to call `imphook.add_import_hook(hook, ext_tuple)`
+multiple times to install multiple hooks. The hooks are installed
+in the stack-like fashion, the last installed will be called
+first. It is possible to install multiple hooks for the same file
+extension, and earlier installed hooks may still be called in this
+case, because a hook function may skip processing a particular
+file, and let other hooks to take a chance, with default processing
+happening if no hook handled the import.
+
 
 Credits and licensing
 ---------------------
