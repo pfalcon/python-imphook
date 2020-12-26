@@ -42,12 +42,12 @@ if has_setimphook:
     _old_hook = ...
     _hooks = []
 
-    def _hook_dispatch(path):
+    def _hook_dispatch(modname, path):
         for hook, exts in _hooks:
             for ext in exts:
                 f = path + ext
                 if os.path.isfile(f):
-                    mod = hook(f)
+                    mod = hook(modname, f)
                     if mod is not None:
                         return mod
         if _old_hook:
@@ -75,9 +75,8 @@ else:
             #print("create_module", spec)
             ext = "." + spec.origin.rsplit(".", 1)[1]
             for h in _ext2hook[ext]:
-                m = h(spec.origin)
+                m = h(spec.name, spec.origin)
                 if m:
-                    m.__name__ = spec.name
                     return m
 
         def exec_module(self, mod):
