@@ -107,6 +107,14 @@ case, because a hook function may skip processing a particular
 file, and let other hooks to take a chance, with default processing
 happening if no hook handled the import.
 
+The signature and template of the actual hook function is::
+
+    def my_hook(modname, filename):
+        # Return None if you don't want to handle `filename`.
+        # Otherwise, load `filename`, create a Python module object,
+        # with name `modname`, populate it based on the loaded file
+        # contents, and return it.
+
 
 Credits and licensing
 ---------------------
