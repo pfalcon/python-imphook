@@ -115,6 +115,23 @@ The signature and template of the actual hook function is::
         # with name `modname`, populate it based on the loaded file
         # contents, and return it.
 
+The *modname* parameter is a full module name of the module to
+import, in the usual dot-separated notation, e.g. ``my_module``
+or ``pkg.subp.mod``. For relative imports originated from within
+a package, this name is already resolved to full absolute name.
+The *modname* should be used to create a module object with the
+given name.
+
+The *filename* parameter is a full pathname (with extension) of the
+file which hook should import. This filename is known to exist, so
+you may proceed to open it directly. You may skip processing this
+file by returning ``None`` from the hook, then other hooks may be
+tried, and default processing happens otherwise (e.g. ``.py`` files
+are loaded as usual, or ImportError raised for non-standard
+extensions). For package imports, the value of *filename* ends with
+``/__init__.py``, and that is the way to distinguish module vs
+package imports.
+
 
 Credits and licensing
 ---------------------
