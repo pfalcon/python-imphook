@@ -132,6 +132,41 @@ extensions). For package imports, the value of *filename* ends with
 ``/__init__.py``, and that is the way to distinguish module vs
 package imports.
 
+If the hook proceeds with the file, it should load it by whatever
+means suitable for the file type. File types which are not natively
+supported by Python would require installing and using other extension
+modules (beyond ``imphook``). After loading the file, the hook should
+create an empty Python module object which will be the result of the
+import. There are a few ways to do that:
+
+* The baseline is to call a module type as a constructor. To get
+  a module type, just apply the usual ``type()`` function to an
+  existing (imported) module. You'll definitely have ``imphook``
+  itself imported, which leads us to::
+
+    mod = type(imphook)(modname)
+
+  The parameter to constructor is the name of module to create,
+  as passed to the hook.
+* If the above looks too magic for you, you can import symbolic
+  name for module type from the ``types`` module::
+
+    from types import ModuleType
+    mod = ModuleType(modname)
+
+* Finally, you may use the ``imp`` module, which may be as well
+  the clearest (to the newbie) way of doing it::
+
+    import imp
+    mod = imp.new_module(modname)
+
+  But mind that the ``imp`` module is considered deprecated.
+
+Of the choices above, the first is the most efficient - no need
+to import additional modules, and it's just one line. And once
+you saw and were explained what it does, it shouldn't be a problem
+to remember and recognize it later.
+
 
 Credits and licensing
 ---------------------
