@@ -83,8 +83,8 @@ ready-to-use examples::
     git clone https://github.com/pfalcon/python-imphook
 
 
-API to install hooks
---------------------
+API to install hooks and hook structure
+---------------------------------------
 
 The API of the module consists of one function:
 `imphook.add_import_hook(hook, ext_tuple)`. *hook* is a name of
@@ -166,6 +166,19 @@ Of the choices above, the first is the most efficient - no need
 to import additional modules, and it's just one line. And once
 you saw and were explained what it does, it shouldn't be a problem
 to remember and recognize it later.
+
+Once the module object is created as discussed above, you should
+populate it. A way to do that is by using ``setattr()`` builtin
+to set a particular attribute of a module to a particular value.
+Attributes usually represent variables with data values, but
+may be also functions and classes.
+
+Finally, you just return the populated module object.
+
+In case you want to perform custom transformation on the Python
+source, the process is usually somewhat different, where you
+transform a representation of the source, and then execute it
+in the context of a new module, which causes it to be populated.
 
 
 Credits and licensing
