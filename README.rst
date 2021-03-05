@@ -181,6 +181,17 @@ transform a representation of the source, and then execute it
 in the context of a new module, which causes it to be populated.
 
 
+Using import hooks in your applications
+---------------------------------------
+
+There are 2 ways to use import hook(s) in you Python programs:
+either preloading them before starting your program using ``imphook``
+command-line runner (next section) or load them explicitly at the
+startup of your application. Crucial thing to remember that import
+hooks apply: a) for imports only; b) for imports appearing after
+the hook was installed.
+
+
 Credits and licensing
 ---------------------
 
