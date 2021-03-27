@@ -3,7 +3,7 @@ from setuptools import setup
 
 
 setup(name="imphook",
-      version="0.5.1",
+      version="0.5.2",
       description="""Simple and clear import hooks for Python - import anything as if it were a Python module""",
       long_description=open('README.rst').read(),
       url="https://github.com/pfalcon/python-imphook",
