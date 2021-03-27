@@ -191,6 +191,31 @@ startup of your application. Crucial thing to remember that import
 hooks apply: a) for imports only; b) for imports appearing after
 the hook was installed.
 
+The main file of our application is normally *not imported*, but
+executed directly. This leads to the following pattern in structuring
+your application source files:
+
+* Have a "startup file", which is the one which user will actually
+  run, so name it appropriately. In that file, you load import hooks
+  and perform other baseline system-level initialization.
+* The main functionality of your application is contained in seperate
+  module(s). The startup script imports such a main module and
+  executes it (e.g., by calling a function from it).
+
+You already grasped how that works - as the "main" module is
+*imported*, whatever hooks the "startup" script installed, will
+apply to it.
+
+This pattern is actually officially encoded in the structure of
+Python *packages*. And any non-trivial Python application will
+likely be a package with a few sub-modules in it, so you can as
+well structure your applications this way (as a package), even
+if they start simple (only one submodule initially). So, if you
+try to "run" a package, what actually gets run is ``__main__``
+submodule in that package. That's exactly the "startup" file
+we discussed above. It installs the import hooks, and imports
+a submodule with actual application's functionality.
+
 
 Credits and licensing
 ---------------------
