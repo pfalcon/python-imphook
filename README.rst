@@ -216,6 +216,27 @@ submodule in that package. That's exactly the "startup" file
 we discussed above. It installs the import hooks, and imports
 a submodule with actual application's functionality.
 
+The actual loading of hooks is very easy: just import them in
+your startup script, voila! For ``mod_conf.py`` hook module
+shown in the example above that would be::
+
+    import mod_conf
+
+You should do that as soon as reasonably possible in your startup
+file. Normally, that would be after stdlib imports, and before
+imports of your app's modules. Sometimes, you may want to put
+hook imports very first, even before the stdlib modules. E.g.,
+if hooks implement JIT compilation, which may benefit even stdlib
+modules (someone yet has to develop such hooks!). All in all,
+follow the guidelines above and documentation of the particular
+hooks that you use.
+
+Finally, the pattern described above (of having "startup" and
+"main" modules in your app) doesn't work too well in case your
+application is a single script file, you would need to turn that
+into 2 files to make the import hooks work. But that's exactly
+why ``imphook`` provides command-line preloader/runner interface!
+
 
 Credits and licensing
 ---------------------
