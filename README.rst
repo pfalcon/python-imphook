@@ -238,6 +238,49 @@ into 2 files to make the import hooks work. But that's exactly
 why ``imphook`` provides command-line preloader/runner interface!
 
 
+Command-line interface
+----------------------
+
+Where you would normally run a single script like:
+
+* ``python3 script.py``, or
+* ``python3 -m script``
+
+you can run the same script/module with some import hooks preloaded
+using following commands (changes comparing to the above commands
+are shown in italics):
+
+* ``python3`` *-m imphook -i <mod_hook>* ``script.py``, or
+* ``python3`` *-m imphook -i <mod_hook>* ``-m script``
+
+That's exactly how we ran ``example_conf.py`` in the Quick Start
+section. You can repeat ``-i`` option multiple times. Alternatively
+and more compactly, you can pass to single ``-i`` option a
+comma-separated list of hook modules to import, e.g.:
+``-i mod_hook1,mod_hook2,mod_hook3``. If you pass multiple hooks,
+the will be handled in the same stack-like fashion as the API
+call described above. In the previous example, ``mod_hook3`` will
+be called first to process imports, then ``mod_hook2``, then
+``mod_hook1``. Of course, this will be important only if more
+than one hook handles the same file extenstion.
+
+This stack-like order on the command-line is used for consistency
+with the API, to avoid confusion between the two. But it's also
+the natural order, if you think about it: we start with standard
+Python import hooks (yes, Python handles all imports using hooks,
+although its hooks are as simple and clear as those we build here
+with ``imphook``). Then, there may be some hooks installed in
+``sitecustomize`` module (that's a way to install some "persistent"
+hooks for all your projects, which we don't go into, as it should
+be known for any advanced user). When we get to the ``imphook``
+command line, we want to be able to override either standard
+Python or ``sitecustomize`` hooks, and that's why all hooks are
+consistently installed in the stack-like fashion. And you should
+keep in mind that if an application explicitly installs any hooks,
+they will have higher priority than those passed on the command
+line.
+
+
 Credits and licensing
 ---------------------
 
