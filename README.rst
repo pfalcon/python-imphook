@@ -280,6 +280,18 @@ keep in mind that if an application explicitly installs any hooks,
 they will have higher priority than those passed on the command
 line.
 
+We also should again emphasize the difference between ``script.py``
+and ``-m script`` forms above. In the first case, the script is
+*executed directly*, and any import hooks you specified with
+``-i`` **do not** apply to the script itself (but will apply to
+imports performed by ``script.py``). Even want hooks to apply
+to the script's source itself, you **must** run it using
+``-m script`` notation (which exactly tells "import this script
+as a module, don't run it directly"). Pay double attention that
+when you use ``-m`` switch, you **must not** use the ``.py``
+extension (if you do, you ask to import the submodule ``py`` of
+package ``script``, which rarely what you want or makes sense).
+
 
 Credits and licensing
 ---------------------
