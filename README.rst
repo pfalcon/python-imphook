@@ -292,6 +292,12 @@ when you use ``-m`` switch, you **must not** use the ``.py``
 extension (if you do, you ask to import the submodule ``py`` of
 package ``script``, which rarely what you want or makes sense).
 
+Last final note is about whitespace in the command-line parameters:
+they should be used exactly as shown and described: there should
+always be spaces between ``-i`` and ``-m`` options and their
+parameters. And vice versa, if you use comma-separated list of
+import hooks, there should be no spaces in that list.
+
 
 Credits and licensing
 ---------------------
