@@ -179,6 +179,7 @@ In case you want to perform custom transformation on the Python
 source, the process is usually somewhat different, where you
 transform a representation of the source, and then execute it
 in the context of a new module, which causes it to be populated.
+An example of that is provided in the latter section.
 
 
 Using import hooks in your applications
@@ -297,6 +298,25 @@ they should be used exactly as shown and described: there should
 always be spaces between ``-i`` and ``-m`` options and their
 parameters. And vice versa, if you use comma-separated list of
 import hooks, there should be no spaces in that list.
+
+
+Example of Python source transformation
+---------------------------------------
+
+We started this documentation with a quick example of writing an
+import hook for a simple DSL. We'd like to finish it with examples
+of another expected common use of ``imphook`` - implementing
+new syntactic (and semantic!) features for Python.
+
+A common starting example is just trying to "rename" one of existing
+syntactic elements, e.g. use word "function" instead of "lambda".
+
+So, we'd like to get following source code dialect to run:
+
+``example_funkw.py``::
+
+    my_fun = function: print("imphook's functionality is cool!")
+    my_fun()
 
 
 Credits and licensing
