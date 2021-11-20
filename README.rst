@@ -318,6 +318,31 @@ So, we'd like to get following source code dialect to run:
     my_fun = function: print("imphook's functionality is cool!")
     my_fun()
 
+The simplest way to do that is just to replace every occurance of
+"function" in the source with "lambda" (then compile, then execute
+it in the module context). We thus will come up with the following
+hook implementation:
+
+``mod_funkw_naive.py``::
+
+    import imphook
+
+    def hook(filename):
+        with open(filename) as f:
+            source = f.read()
+        source = source.replace("function", "lambda")
+        mod = type(imphook)("")
+        exec(source, vars(mod))
+        return mod
+
+    imphook.add_import_hook(hook, (".py",))
+
+If you read previous sections carefully, you already know that if
+we want the import hook to apply to the script itself, we must
+run it as module, using ``-m`` switch::
+
+    python3 -m imphook -i mod_funkw_naive -m example_funkw
+
 
 Credits and licensing
 ---------------------
