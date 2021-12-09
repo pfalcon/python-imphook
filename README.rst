@@ -343,6 +343,46 @@ run it as module, using ``-m`` switch::
 
     python3 -m imphook -i mod_funkw_naive -m example_funkw
 
+And we get::
+
+    imphook's lambdaality is cool!
+
+Oops! The word "lambdaality" is definitely cool, but that's not what
+we expected! It happens because the code just blindly replaces
+occurrances everywhere, including within string literals. We could
+try to work that around by using regular expression replace and match
+whole words, that would help with the case above, but would still
+replace lone "function" in the strings. Which makes us conclude:
+transforming surface representation of a program (i.e. a sequence
+of characters) is never an adequte method. We should operate on
+a more suitable program representation, and the baseline such
+representation is a sequence (or stream) of tokens. Let's use it:
+
+mod_funkw.py::
+
+    import tokenize
+    import imphook
+
+    def hook(filename):
+
+        def xform(token_stream):
+            for t in token_stream:
+                if t[0] == tokenize.NAME and t[1] == "function":
+                    yield (tokenize.NAME, "lambda") + t[2:]
+                else:
+                    yield t
+
+        with open(filename, "rb") as f:
+            # Fairly speaking, tokenizing just to convert back to string form
+            # isn't too efficient, but CPython doesn't offer us a way to parse
+            # token stream so far, so we have no choice.
+            source = tokenize.untokenize(xform(tokenize.tokenize(f.readline)))
+        mod = type(imphook)("")
+        exec(source, vars(mod))
+        return mod
+
+    imphook.add_import_hook(hook, (".py",))
+
 
 Credits and licensing
 ---------------------
